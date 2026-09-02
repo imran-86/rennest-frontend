@@ -1,5 +1,6 @@
 'use server';
 
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export type RegisterState = {
@@ -67,4 +68,55 @@ export async function registerAction(
     return { error: 'Network error. Please try again later.' };
   }
   redirect('/auth/login');
+}
+
+
+
+export type LoginState = {
+  success: boolean;
+  statusCode?: number;
+  message?: string;
+  data?: {
+    accessToken: string;
+    refreshToken: string;
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
+};
+export const  loginAction = async(prevState: LoginState, formData: FormData) => {
+
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+  console.log({email,password});
+
+  const payload = {
+    email,
+    password
+  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,{
+    method : 'POST',
+    headers : {
+     "Content-Type" : "application/json"
+    },
+    body : JSON.stringify(payload)
+  })
+  const result = await res.json();
+
+  // console.log("Result ",result);
+  
+   return {
+    success: true,
+    statusCode: 200,
+    message: 'Login successful!',
+    data: {
+      accessToken: 'your-access-token',
+      refreshToken: 'your-refresh-token',
+      id: 'user-id',
+      name: 'John Doe',
+      email: email,
+      role: 'TENANT',
+    },
+  };
 }
