@@ -1,6 +1,4 @@
-// components/Navbar.tsx
 'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -26,7 +24,7 @@ interface NavbarProps {
     name: string;
     email: string;
     image?: string;
-    role: 'tenant' | 'landlord' | 'admin';
+    role: 'TENANT' | 'LANDLORD' | 'ADMIN';
   } | null;
 }
 

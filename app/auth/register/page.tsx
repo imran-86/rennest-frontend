@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2 } from 'lucide-react';
+import { Loader2, User, Building2, ShieldCheck } from 'lucide-react';
 import { registerAction } from '../_actions/authActions';
 
 const initialState = {
@@ -31,7 +31,6 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-2">
-           
             <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">
               R
             </div>
@@ -41,14 +40,55 @@ export default function RegisterPage() {
             Join RentNest to find or list rental properties
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <form action={formAction} className="space-y-4">
-            {state.error && (
+            {state?.error && (
               <Alert variant="destructive">
                 <AlertDescription>{state.error}</AlertDescription>
               </Alert>
             )}
 
+            {/* Select Role First */}
+            <div className="space-y-2">
+              <Label>I want to join as</Label>
+              <RadioGroup name="role" defaultValue="tenant" className="grid grid-cols-3 gap-2">
+                <div>
+                  <RadioGroupItem value="tenant" id="role-tenant" className="peer sr-only" />
+                  <Label
+                    htmlFor="role-tenant"
+                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer text-xs font-medium"
+                  >
+                    <User className="mb-1 h-4 w-4" />
+                    Tenant
+                  </Label>
+                </div>
+
+                <div>
+                  <RadioGroupItem value="landlord" id="role-landlord" className="peer sr-only" />
+                  <Label
+                    htmlFor="role-landlord"
+                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer text-xs font-medium"
+                  >
+                    <Building2 className="mb-1 h-4 w-4" />
+                    Landlord
+                  </Label>
+                </div>
+
+                <div>
+                  <RadioGroupItem value="admin" id="role-admin" className="peer sr-only" />
+                  <Label
+                    htmlFor="role-admin"
+                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer text-xs font-medium"
+                  >
+                    <ShieldCheck className="mb-1 h-4 w-4" />
+                    Admin
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            {/* Full Name */}
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
               <Input
@@ -60,6 +100,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -72,6 +113,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Phone Number */}
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number (optional)</Label>
               <Input
@@ -83,6 +125,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Password */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -95,6 +138,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Confirm Password */}
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
               <Input
@@ -107,30 +151,7 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label>Select your role</Label>
-              <RadioGroup name="role" defaultValue="tenant" className="grid grid-cols-3 gap-2">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="tenant" id="tenant" />
-                  <Label htmlFor="tenant" className="font-normal cursor-pointer">
-                    Tenant
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="landlord" id="landlord" />
-                  <Label htmlFor="landlord" className="font-normal cursor-pointer">
-                    Landlord
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="admin" id="admin" />
-                  <Label htmlFor="admin" className="font-normal cursor-pointer">
-                    Admin
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-
+            {/* Submit Button */}
             <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? (
                 <>
@@ -143,6 +164,7 @@ export default function RegisterPage() {
             </Button>
           </form>
         </CardContent>
+
         <CardFooter className="flex flex-col space-y-2">
           <div className="text-sm text-muted-foreground text-center">
             Already have an account?{' '}

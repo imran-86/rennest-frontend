@@ -139,17 +139,5 @@ export const  loginAction = async(prevState: LoginState, formData: FormData) => 
 
   }
   
-   return {
-    success: true,
-    statusCode: 200,
-    message: 'Login successful!',
-    data: {
-      accessToken: 'your-access-token',
-      refreshToken: 'your-refresh-token',
-      id: 'user-id',
-      name: 'John Doe',
-      email: email,
-      role: 'TENANT',
-    },
-  };
+  return result;
 }
