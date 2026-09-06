@@ -2,6 +2,8 @@
 
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import jwt,{JwtPayload} from "jsonwebtoken"
+
 
 export type RegisterState = {
   error?: string;
@@ -104,7 +106,38 @@ export const  loginAction = async(prevState: LoginState, formData: FormData) => 
   })
   const result = await res.json();
 
-  // console.log("Result ",result);
+  console.log("Result ",result);
+  if(result.success){
+    const cookieStore = await cookies();
+
+    cookieStore.set("accessToken",result.data.accessToken,{
+      httpOnly: true,
+      maxAge : 60*60*24,
+      sameSite : "lax"
+    });
+    cookieStore.set("refreshToken",result.data.refreshToken,{
+      httpOnly : true,
+      maxAge : 60 * 60 * 24 *7,
+      sameSite : "lax"
+    });
+
+    const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload;
+
+    // console.log("Decoded Token ", decodedToken);
+    // console.log(decodedToken.role);
+
+      if(decodedToken.role === "TENANT"){
+            redirect("/dashboard/tenant");
+        } else if (decodedToken.role === "ADMIN"){
+            redirect("/dashboard/admin");
+        } else if (decodedToken.role === "LANDLORD"){
+            redirect("/dashboard/landlord");
+        }
+
+    
+    
+
+  }
   
    return {
     success: true,
