@@ -1,11 +1,16 @@
-import { getAllProperties } from "../_actions/getAllProperties"
+import LandlordPropertiesClient from '../../_components/LandlordProperties';
+import { getAllProperties } from '../_actions/getAllProperties';
 
-export default async function LandlordAllPropertiesPage(){
-    const result = await getAllProperties();
-    console.log(result.data.length);
-    
-    return (
-        <div>
-        Landlord All properties {result.data.length}</div>
-    )
+
+
+export default async function LandlordPropertiesPage() {
+  const res = await getAllProperties();
+  const rawData = res?.data;
+  const properties = Array.isArray(rawData)
+    ? rawData
+    : Array.isArray(rawData?.properties)
+    ? rawData.properties
+    : [];
+
+  return <LandlordPropertiesClient properties={properties} />;
 }
