@@ -5,6 +5,8 @@ import { getAllProperties } from '../_actions/getAllProperties';
 
 export default async function LandlordPropertiesPage() {
   const res = await getAllProperties();
+
+  // Safely extract properties array
   const rawData = res?.data;
   const properties = Array.isArray(rawData)
     ? rawData

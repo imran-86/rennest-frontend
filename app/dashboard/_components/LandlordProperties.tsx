@@ -15,7 +15,6 @@ import {
 } from '@/components/ui/table';
 import { Plus, Building2, MapPin, Bed, Bath, Maximize2, Eye, Edit, Trash2 } from 'lucide-react';
 
-
 interface Property {
   id: string;
   title: string;
@@ -151,7 +150,7 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
                           className="h-8 w-8 text-muted-foreground hover:text-foreground"
                           asChild
                         >
-                          <Link href={`/dashboard/landlord/properties/${property.id}`}>
+                          <Link href={`/dashboard/landlord/all-properties/${property.id}`}>
                             <Eye className="h-4 w-4" />
                           </Link>
                         </Button>
@@ -159,7 +158,7 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                        
+                         
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -167,7 +166,7 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                          
+                         
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -181,7 +180,6 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
         </CardContent>
       </Card>
 
-   
     </div>
   );
 }
