@@ -9,16 +9,44 @@ import {
 } from '@/components/ui/card';
 import { getAllRequest } from "../landlord/_actions/getAllRequest";
 
+interface RentalRequest {
+  _id?: string;
+  id?: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'ACTIVE' | 'COMPLETED' | string;
+  rentAmount?: number;
+  price?: number;
+  property?: {
+    title?: string;
+    location?: string;
+  };
+  tenant?: {
+    name?: string;
+    email?: string;
+  };
+}
+
 export async function LandlordDashboard() {
   const [propertiesRes,requestsRes] = await Promise.all([
    getAllProperties(),
    getAllRequest()
   ]);
 
-  const properties = propertiesRes.data || [];
-  const requests = requestsRes.data || [];
+  const rawProperties = propertiesRes?.data;
+const properties = Array.isArray(rawProperties)
+  ? rawProperties
+  : Array.isArray(rawProperties?.properties)
+  ? rawProperties.properties
+  : [];
+  console.log("Properties Length  ",properties.length);
+  
+const rawRequests = requestsRes?.data;
+const requests: RentalRequest[] = Array.isArray(rawRequests)
+  ? rawRequests
+  : Array.isArray(rawRequests?.requests)  
+  ? rawRequests.requests
+  : [];
 
-  const pendingRequests = requests.filter((r : any) => r.status === 'PENDING');
+const pendingRequests = requests.filter((r) => r.status === 'PENDING');
 
   if (properties.length === 0) {
     return (
@@ -30,7 +58,7 @@ export async function LandlordDashboard() {
 const stats = [
     {
       title: 'Total Properties',
-      value: properties.length.toString(),
+      value: (properties?.length ?? 0).toString(),
       change: 'Active listings',
       icon: Building2,
       color: 'text-blue-600 dark:text-blue-400',
@@ -38,7 +66,7 @@ const stats = [
     },
     {
       title: 'Pending Requests',
-      value: pendingRequests.length.toString(),
+     value: (pendingRequests?.length ?? 0).toString(),
       change: 'Action required',
       icon: Clock,
       color: 'text-amber-600 dark:text-amber-400',

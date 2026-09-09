@@ -14,7 +14,8 @@ export const getAllProperties = async () => {
         }
     
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/landlord/properties`, {
-            headers : {
+        method : "GET",    
+        headers : {
                 Cookie : `accessToken=${accessToken}`
             },
     

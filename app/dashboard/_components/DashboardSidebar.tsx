@@ -85,7 +85,7 @@ export default function DashboardSidebar({ user }: DashboardSidebarProps) {
     },
     {
       title: 'My Properties',
-      href: '/dashboard/landlord/properties',
+      href: '/dashboard/landlord/all-properties',
       icon: Home,
     },
     {
