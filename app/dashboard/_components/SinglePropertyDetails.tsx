@@ -5,32 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, MapPin, Bed, Bath, Maximize2, Sparkles, Building2 } from 'lucide-react';
-interface Property {
-  id: string;
-  title: string;
-  description: string;
-  type: string;
-  status: 'AVAILABLE' | 'RENTED' | string;
-  price: number | string;
-  location: string;
-  address: string;
-  city: string;
-  bedrooms: number;
-  bathrooms: number;
-  areaSqft?: number;
-  amenities: string[];
-  images: string[];
-  createdAt: string;
-}
-export default async function PropertyDetailsPage(property : Property) {
-   
+import { Property } from '../landlord/_types/type';
+
+export default async function PropertyDetailsPage({property}:{property : Property}) {
+
+
+  
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="icon" asChild>
-          <Link href="/dashboard/landlord/properties">
+        <Button variant="outline" size="icon">
+          <Link href="/dashboard/landlord/all-properties">
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
