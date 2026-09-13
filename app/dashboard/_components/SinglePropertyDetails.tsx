@@ -30,24 +30,73 @@ export default async function PropertyDetailsPage({property}:{property : Propert
       </div>
 
       {/* Top Image Gallery */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {property.images && property.images.length > 0 ? (
-          property.images.map((imgUrl: string, idx: number) => (
-            <div
-              key={idx}
-              className={`relative rounded-xl overflow-hidden border border-border/60 ${
-                idx === 0 ? 'md:col-span-2 h-72 md:h-80' : 'h-36 md:h-80'
-              }`}
-            >
-              <Image src={imgUrl} alt={`${property.title} - image ${idx + 1}`} fill className="object-cover" />
-            </div>
-          ))
-        ) : (
-          <div className="col-span-3 h-64 rounded-xl bg-muted border border-border/60 flex items-center justify-center text-muted-foreground">
-            <Building2 className="h-10 w-10" />
-          </div>
-        )}
+      {property.images && property.images.length > 0 ? (
+  property.images.length === 1 ? (
+    // Single large image
+    <div className="relative rounded-xl overflow-hidden border border-border/60 h-72 md:h-96">
+      <Image
+        src={property.images[0]}
+        alt={property.title}
+        fill
+        unoptimized
+        className="object-cover"
+      />
+    </div>
+  ) : property.images.length === 2 ? (
+    // Two images side by side
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {property.images.map((imgUrl, idx) => (
+        <div
+          key={idx}
+          className="relative rounded-xl overflow-hidden border border-border/60 h-72 md:h-80"
+        >
+          <Image
+            src={imgUrl}
+            alt={`${property.title} - ${idx + 1}`}
+            fill
+            unoptimized
+            className="object-cover"
+          />
+        </div>
+      ))}
+    </div>
+  ) : (
+   
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* Featured (left) */}
+      <div className="relative rounded-xl overflow-hidden border border-border/60 h-72 md:h-96 md:col-span-2">
+        <Image
+          src={property.images[0]}
+          alt={`${property.title} - main`}
+          fill
+          unoptimized
+          className="object-cover"
+        />
       </div>
+      {/* Other images (right, 2x2 grid) */}
+      <div className="md:col-span-2 grid grid-cols-2 gap-4">
+        {property.images.slice(1, 5).map((imgUrl, idx) => (
+          <div
+            key={idx}
+            className="relative rounded-xl overflow-hidden border border-border/60 h-36 md:h-[11.5rem]"
+          >
+            <Image
+              src={imgUrl}
+              alt={`${property.title} - ${idx + 2}`}
+              fill
+              unoptimized
+              className="object-cover"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+) : (
+  <div className="h-64 rounded-xl bg-muted border border-border/60 flex items-center justify-center text-muted-foreground">
+    <Building2 className="h-10 w-10" />
+  </div>
+)}
 
       {/* Property Details Grid */}
       <Card className="shadow-sm border-border/60">

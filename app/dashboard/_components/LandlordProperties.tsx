@@ -14,27 +14,15 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Plus, Building2, MapPin, Bed, Bath, Maximize2, Eye, Edit, Trash2 } from 'lucide-react';
+import EditPropertyModal from './EditPropertyDialog';
+import { Property } from '../landlord/_types/type';
 
-interface Property {
-  id: string;
-  title: string;
-  description: string;
-  type: string;
-  status: 'AVAILABLE' | 'RENTED' | string;
-  price: number | string;
-  location: string;
-  address: string;
-  city: string;
-  bedrooms: number;
-  bathrooms: number;
-  areaSqft?: number;
-  amenities: string[];
-  images: string[];
-  createdAt: string;
-}
+
 
 export default function LandlordPropertiesClient({ properties = [] }: { properties: Property[] }) {
-  
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+ 
 
   // Sorting: AVAILABLE properties first
   const sortedProperties = [...properties].sort((a, b) => {
@@ -52,7 +40,7 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
             Manage your property listings, availability states, and details.
           </p>
         </div>
-        <Button asChild className="gap-2 shadow-sm">
+        <Button  className="gap-2 shadow-sm">
           <Link href="/dashboard/landlord/properties/new">
             <Plus className="h-4 w-4" />
             <span>Post New Property</span>
@@ -144,32 +132,43 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
 
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
+                        {/* Eye Button -> View Property Details */}
                         <Button
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                          asChild
+                         
                         >
                           <Link href={`/dashboard/landlord/all-properties/${property.id}`}>
                             <Eye className="h-4 w-4" />
                           </Link>
                         </Button>
+                        
+                        {/* Edit Button -> Opens Edit Modal */}
                         <Button
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                         
+                          onClick={() => {
+                            setSelectedProperty(property);
+                            setEditModalOpen(true);
+                          }}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button
+
+                        {/* Trash Button -> Opens Delete Alert Dialog */}
+                        {/* <Button
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                         
-                        >
+                          onClick={() => {
+                            setPropertyToDelete(property.id);
+                            setDeleteDialogOpen(true);
+                          }}
+                        > */}
                           <Trash2 className="h-4 w-4" />
-                        </Button>
+                        {/* </Button> */}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -180,6 +179,29 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
         </CardContent>
       </Card>
 
+      {/* Edit Property Modal */}
+      {selectedProperty && (
+        <EditPropertyModal
+          property={selectedProperty}
+          isOpen={editModalOpen}
+          onClose={() => {
+            setEditModalOpen(false);
+            setSelectedProperty(null);
+          }}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {/* {propertyToDelete && (
+        <DeletePropertyDialog
+          propertyId={propertyToDelete}
+          isOpen={deleteDialogOpen}
+          onClose={() => {
+            setDeleteDialogOpen(false);
+            setPropertyToDelete(null);
+          }}
+        />
+      )} */}
     </div>
   );
 }

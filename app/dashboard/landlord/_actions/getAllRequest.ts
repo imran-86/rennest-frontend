@@ -1,6 +1,7 @@
 'use server'
 import { cookies } from "next/headers";
 
+
 export const getAllRequest = async () => {
     const cookieStore = await cookies();
     
@@ -25,7 +26,10 @@ export const getAllRequest = async () => {
             }
         });
     
-        const result = res.json();
+        const result = await res.json();
+
+        console.log("Result of request",result);
+        
     
     
         return result
