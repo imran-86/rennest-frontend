@@ -16,14 +16,16 @@ import {
 import { Plus, Building2, MapPin, Bed, Bath, Maximize2, Eye, Edit, Trash2 } from 'lucide-react';
 import EditPropertyModal from './EditPropertyDialog';
 import { Property } from '../landlord/_types/type';
+import DeletePropertyDialog from './DeletePropertyDialog';
 
 
 
 export default function LandlordPropertiesClient({ properties = [] }: { properties: Property[] }) {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
- 
-
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null);
+  
   // Sorting: AVAILABLE properties first
   const sortedProperties = [...properties].sort((a, b) => {
     if (a.status === 'AVAILABLE' && b.status !== 'AVAILABLE') return -1;
@@ -158,7 +160,7 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
                         </Button>
 
                         {/* Trash Button -> Opens Delete Alert Dialog */}
-                        {/* <Button
+                        <Button
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-destructive"
@@ -166,9 +168,9 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
                             setPropertyToDelete(property.id);
                             setDeleteDialogOpen(true);
                           }}
-                        > */}
+                        >
                           <Trash2 className="h-4 w-4" />
-                        {/* </Button> */}
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -192,7 +194,7 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
       )}
 
       {/* Delete Confirmation Dialog */}
-      {/* {propertyToDelete && (
+      {propertyToDelete && (
         <DeletePropertyDialog
           propertyId={propertyToDelete}
           isOpen={deleteDialogOpen}
@@ -201,7 +203,7 @@ export default function LandlordPropertiesClient({ properties = [] }: { properti
             setPropertyToDelete(null);
           }}
         />
-      )} */}
+      )}
     </div>
   );
 }
