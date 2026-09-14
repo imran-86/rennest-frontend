@@ -21,4 +21,34 @@ export type Property = {
   landlordId: string;
   categoryId: string;
 };
+export interface TenantInfo {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+}
 
+export interface PropertyInfo {
+  id: string;
+  title: string;
+  price: number | string;
+  location: string;
+  city: string;
+}
+
+export interface RentalRequest {
+  id: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'ACTIVE' | 'COMPLETED' | string;
+  moveInDate: string;
+  moveOutDate: string | null;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  tenantId: string;
+  propertyId: string;
+  isPaid: boolean;
+  paidAt: string | null;
+  paymentId: string | null;
+  tenant: TenantInfo;
+  property: PropertyInfo;
+}

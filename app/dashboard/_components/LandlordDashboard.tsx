@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { getAllRequest } from "../landlord/_actions/getAllRequest";
+import { getAllRequest } from "../landlord/requests/_actions/getAllRequest";
 
 interface RentalRequest {
   _id?: string;

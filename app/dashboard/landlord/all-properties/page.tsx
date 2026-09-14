@@ -3,6 +3,7 @@ import { getAllProperties } from '../_actions/getAllProperties';
 
 
 
+
 export default async function LandlordPropertiesPage() {
   const res = await getAllProperties();
 
