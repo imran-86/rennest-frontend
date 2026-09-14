@@ -1,4 +1,6 @@
 'use client';
+
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,11 +14,19 @@ import {
 } from '@/components/ui/table';
 import { Eye, CheckCircle2, XCircle, ClipboardList, MapPin } from 'lucide-react';
 import { RentalRequest } from '../../_types/type';
+import RequestDetailsModal from './RequestDetailsModal';
+import UpdateStatusDialog from './UpdateStatusDialog';
 
 
 
 export default function LandlordRequestsClient({ requests = [] }: { requests: RentalRequest[] }) {
+  const [selectedRequest, setSelectedRequest] = useState<RentalRequest | null>(null);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   
+  const [statusDialogInfo, setStatusDialogInfo] = useState<{
+    requestId: string;
+    targetStatus: 'APPROVED' | 'REJECTED';
+  } | null>(null);
 
   // Sorting: PENDING requests on TOP, then ordered by newest createdAt
   const sortedRequests = [...requests].sort((a, b) => {
@@ -115,6 +125,10 @@ export default function LandlordRequestsClient({ requests = [] }: { requests: Re
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                          onClick={() => {
+                            setSelectedRequest(req);
+                            setDetailsModalOpen(true);
+                          }}
                          
                         >
                           <Eye className="h-4 w-4" />
@@ -127,7 +141,12 @@ export default function LandlordRequestsClient({ requests = [] }: { requests: Re
                               variant="outline"
                               size="sm"
                               className="h-8 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 border-emerald-200 gap-1 text-xs"
-                             
+                             onClick={() =>
+                                setStatusDialogInfo({
+                                  requestId: req.id,
+                                  targetStatus: 'APPROVED',
+                                })
+                              }
                             >
                               <CheckCircle2 className="h-3.5 w-3.5" /> Approve
                             </Button>
@@ -136,7 +155,12 @@ export default function LandlordRequestsClient({ requests = [] }: { requests: Re
                               variant="outline"
                               size="sm"
                               className="h-8 text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200 gap-1 text-xs"
-                             
+                             onClick={() =>
+                                setStatusDialogInfo({
+                                  requestId: req.id,
+                                  targetStatus: 'REJECTED',
+                                })
+                              }
                             >
                               <XCircle className="h-3.5 w-3.5" /> Reject
                             </Button>
@@ -154,7 +178,27 @@ export default function LandlordRequestsClient({ requests = [] }: { requests: Re
         </CardContent>
       </Card>
 
-    
+      {/* Details View Modal */}
+      {selectedRequest && (
+        <RequestDetailsModal
+          request={selectedRequest}
+          isOpen={detailsModalOpen}
+          onClose={() => {
+            setDetailsModalOpen(false);
+            setSelectedRequest(null);
+          }}
+        />
+      )}
+
+      {/* Status Update Confirmation Dialog */}
+      {statusDialogInfo && (
+        <UpdateStatusDialog
+          requestId={statusDialogInfo.requestId}
+          targetStatus={statusDialogInfo.targetStatus}
+          isOpen={Boolean(statusDialogInfo)}
+          onClose={() => setStatusDialogInfo(null)}
+        />
+      )}
     </div>
   );
 }

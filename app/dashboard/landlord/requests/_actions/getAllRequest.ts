@@ -28,7 +28,7 @@ export const getAllRequest = async () => {
     
         const result = await res.json();
 
-        console.log("Result of request",result);
+        // console.log("Result of request",result);
         
     
     
