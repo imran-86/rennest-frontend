@@ -1,5 +1,5 @@
 'use server'
-import { cookies } from "next/headers";
+ 
 
 export const getProperties = async ({query } : { query?: { [key: string]: string | string[] | undefined } }) => {
      console.log("query params ",query); 
